@@ -45,12 +45,14 @@ namespace HotelManagement.All_User_Control
             {
                 String name = txtName.Text;
                 Int64 mobile = Int64.Parse(txtMobile.Text);
-                String gender = txtGender.Text;
+                // String gender = txtGender.Text;
+                int gender = txtGender.SelectedIndex;
                 String email = txtEmail.Text;
                 String username = txtUsername.Text;
                 String pass = txtPassword.Text;
 
-                query = "insert into employee (ename, mobile, gender, email, username, pass) values ('" + name + "'," + mobile + ",'" + gender + "','" + email + "','" + username + "','" + pass + "')";
+                query = $"exec sp_ins_employee '{name}', {mobile}, {gender}, '{email}', '{username}', '{pass}'";
+                // query = "insert into employee (ename, mobile, gender, emailid, username, pass) values ('" + name + "'," + mobile + ",'" + gender + "','" + email + "','" + username + "','" + pass + "')";
                 fn.setData(query, "Đăng ký nhân viên thành công!");
 
                 clearAll();
