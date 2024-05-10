@@ -197,9 +197,9 @@
             this.label7.Font = new System.Drawing.Font("Cascadia Mono", 9.75F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, ((byte)(163)));
             this.label7.Location = new System.Drawing.Point(38, 715);
             this.label7.Name = "label7";
-            this.label7.Size = new System.Drawing.Size(104, 17);
+            this.label7.Size = new System.Drawing.Size(80, 17);
             this.label7.TabIndex = 11;
-            this.label7.Text = "Ngày đăng ký";
+            this.label7.Text = "Ngày sinh";
             // 
             // txtDOB
             // 
@@ -213,7 +213,7 @@
             this.txtDOB.Name = "txtDOB";
             this.txtDOB.Size = new System.Drawing.Size(458, 44);
             this.txtDOB.TabIndex = 12;
-            this.txtDOB.Value = new System.DateTime(2024, 4, 24, 17, 2, 24, 813);
+            this.txtDOB.Value = new System.DateTime(2024, 5, 10, 0, 0, 0, 0);
             // 
             // txtAddress
             // 
@@ -289,7 +289,7 @@
             this.txtCheckin.Name = "txtCheckin";
             this.txtCheckin.Size = new System.Drawing.Size(458, 44);
             this.txtCheckin.TabIndex = 18;
-            this.txtCheckin.Value = new System.DateTime(2024, 4, 24, 17, 2, 24, 813);
+            this.txtCheckin.Value = new System.DateTime(2024, 5, 10, 0, 0, 0, 0);
             // 
             // label9
             // 
@@ -350,7 +350,6 @@
             this.txtRoomType.Size = new System.Drawing.Size(458, 36);
             this.txtRoomType.Style = Guna.UI2.WinForms.Enums.TextBoxStyle.Material;
             this.txtRoomType.TabIndex = 22;
-            this.txtRoomType.SelectedIndexChanged += new System.EventHandler(this.txtRoomType_SelectedIndexChanged);
             // 
             // label11
             // 
@@ -479,6 +478,7 @@
             this.Controls.Add(this.label1);
             this.Name = "UC_CustomerRes";
             this.Size = new System.Drawing.Size(1882, 852);
+            this.Load += new System.EventHandler(this.UC_CustomerRes_Load);
             this.Leave += new System.EventHandler(this.UC_CustomerRes_Leave);
             this.ResumeLayout(false);
             this.PerformLayout();

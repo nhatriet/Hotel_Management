@@ -50,7 +50,7 @@ namespace HotelManagement.All_User_Control
                 String username = txtUsername.Text;
                 String pass = txtPassword.Text;
 
-                query = "insert into employee (ename, mobile, gender, emailid, username, pass) values ('" + name + "'," + mobile + ",'" + gender + "','" + email + "','" + username + "','" + pass + "')";
+                query = "insert into employee (ename, mobile, gender, email, username, pass) values ('" + name + "'," + mobile + ",'" + gender + "','" + email + "','" + username + "','" + pass + "')";
                 fn.setData(query, "Đăng ký nhân viên thành công!");
 
                 clearAll();

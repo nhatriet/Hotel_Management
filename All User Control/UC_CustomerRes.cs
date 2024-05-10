@@ -13,13 +13,43 @@ namespace HotelManagement.All_User_Control
 {
     public partial class UC_CustomerRes : UserControl
     {
+        private string connectionString = @"Data Source=MSI\SQLEXPRESS;Initial Catalog=Hotel_Encrypt;Integrated Security=True";
+
         function fn = new function();
+
+        SqlConnection conn;
+        SqlCommand cmd;
+        SqlDataAdapter da;
+
         String query;
 
         public UC_CustomerRes()
         {
             InitializeComponent();
         }
+
+        public void showComboBox()
+        {
+            conn = fn.getConnection();
+            conn.Open();
+
+            cmd = new SqlCommand("select typeid, typedescription from roomtypes", conn);
+            da = new SqlDataAdapter();
+            da.SelectCommand = cmd;
+
+            DataTable table = new DataTable();
+            da.Fill(table);
+            txtRoomType.DataSource = table;
+            txtRoomType.DisplayMember = "typedescription";
+            txtRoomType.ValueMember = "typeid";
+            conn.Close();
+        }
+
+        private void UC_CustomerRes_Load(object sender, EventArgs e)
+        {
+            this.showComboBox();
+        }
+
         public void setComboBox(String qurery, ComboBox combo)
         {
             SqlDataReader sdr = fn.getForCombo(query);
@@ -46,8 +76,8 @@ namespace HotelManagement.All_User_Control
                 String address = txtAddress.Text;
                 String checkin = txtCheckin.Text;
 
-                query = "insert into customer (cname, mobile, nationality, gender, dob, idproof, address, checkin, roomid) values " +
-                    "('" + name + "'," + mobile + ",'" + nationality + "', '" + gender + "','" + dob + "','" + idproof + "','" + address + "','" + checkin + "','" + rid + ") update rooms set booked = 'YES' where roomNo = '" + txtRoomNo.Text + "'";
+                query = "insert into customer (cname, mobile, nationality, gender, dob, idproof, address, roomid) values " +
+                    "('" + name + "'," + mobile + ",'" + nationality + "', '" + gender + "','" + dob + "','" + idproof + "','" + address + "','" + rid + ") update rooms set booked = '1' where roomNo = '" + txtRoomNo.Text + "'";
                 fn.setData(query, "Số phòng " + txtRoomNo.Text + " đăng ký khách hàng thành công");
                 clearAll();
             }
@@ -84,7 +114,8 @@ namespace HotelManagement.All_User_Control
         private void txtRoomType_SelectedIndexChanged(object sender, EventArgs e)
         {
             txtRoomNo.Items.Clear();
-            query = "select roomNo from rooms where bed = '" + txtBed.Text + "' and roomType = '" + txtRoomType.Text + "' and booked = 'NO'";
+            // query = "select roomNo from rooms where roomType = '" + txtRoomType.Text + "' and booked = 'NO'";
+            this.showComboBox();
             setComboBox(query, txtRoomNo);
         }
 

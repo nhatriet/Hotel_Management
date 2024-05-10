@@ -29,15 +29,13 @@ namespace HotelManagement.All_User_Control
         private void LoadRoomData()
         {
             this.showComboBox();
-            /*using (SqlConnection connection = new SqlConnection(connectionString))
-            {*/
-                string query = "select * from RoomView";
-                /* SqlDataAdapter adapter = new SqlDataAdapter(query, connection);
-                 DataTable table = new DataTable();
-                 adapter.Fill(table);
-                 dgwAddRoom.DataSource = table;*/
-                DataSet ds = fn.getData(query);
-                dgwAddRoom.DataSource = ds.Tables[0];
+            string query = "select * from RoomView";
+            /* SqlDataAdapter adapter = new SqlDataAdapter(query, connection);
+                DataTable table = new DataTable();
+                adapter.Fill(table);
+                dgwAddRoom.DataSource = table;*/
+            DataSet ds = fn.getData(query);
+            dgwAddRoom.DataSource = ds.Tables[0];
            
         }
 
