@@ -31,21 +31,29 @@ namespace HotelManagement
 
         private void btnLogin_Click(object sender, EventArgs e)
         {
-            query = "select username, pass from employee where username = '" + txtUsername.Text + "' and pass = '" + txtPassword.Text + "'";
-            DataSet ds = fn.getData(query);
-
-            if (ds.Tables[0].Rows.Count != 0)
+            if (txtUsername.Text != String.Empty || txtPassword.Text != String.Empty)
             {
-                labelError.Visible = false;
-                Dashboard dash = new Dashboard();
-                this.Hide();
-                dash.Show();
+                query = "select username, pass from employee where username = '" + txtUsername.Text + "' and pass = '" + txtPassword.Text + "'";
+                DataSet ds = fn.getData(query);
+
+                if (ds.Tables[0].Rows.Count != 0)
+                {
+                    labelError.Visible = false;
+                    Dashboard dash = new Dashboard();
+                    this.Hide();
+                    dash.Show();
+                }
+                else
+                {
+                    labelError.Visible = true;
+                    txtPassword.Clear();
+                }
             }
             else
             {
-                labelError.Visible = true;
-                txtPassword.Clear();
+                MessageBox.Show("Vui lòng nhập đầy đủ thông tin.", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
+            
         }
     }
 }
