@@ -84,7 +84,7 @@ namespace HotelManagement.All_User_Control
 
         public void setEmployee(DataGridView dgv)
         {
-            query = "select * from employee";
+            query = "exec sp_sel_employee";
             DataSet ds = fn.getData(query);
             dgv.DataSource = ds.Tables[0];
         }
