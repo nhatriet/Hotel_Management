@@ -21,23 +21,20 @@ namespace HotelManagement.All_User_Control
 
         private void UC_CheckOut_Load(object sender, EventArgs e)
         {
-            query = "select customer.cid, customer.cname, customer.mobile, customer.nationality, customer.gender, customer.dob, customer.idproof, customer.address, rooms.roomNo, roomtypes.typedescription, roomtypes.price" +
-                " from customer inner join book on customer.cid = book.cid inner join rooms on book.roomid = rooms.roomid inner join roomtypes on roomtypes.typeid = rooms.typeid" +
-                " where book.ischeckedout = 0";
+            query = "Select * from PaymentInfo";
             DataSet ds = fn.getData(query);
             dgwCheckOut.DataSource = ds.Tables[0];
         }
 
         private void txtName_TextChanged(object sender, EventArgs e)
         {
-            query = "select customer.cid, customer.cname, customer.mobile, customer.nationality, customer.gender, customer.dob, customer.idproof, customer.address, rooms.roomNo, roomtypes.typedescription, roomtypes.price" +
-                " from customer inner join book on customer.cid = book.cid inner join rooms on book.roomid = rooms.roomid inner join roomtypes on roomtypes.typeid = rooms.typeid" +
-                " where cname like '" + txtName.Text + "' and ischeckedout = 0";
+            string CName = txtName.Text.Trim();
+            query = "SELECT * FROM PaymentInfo WHERE cname LIKE '" + CName + "'";
+            // query = "Select * from PaymentInfo where cname like '" + txtName.Text + "'";
             DataSet ds = fn.getData(query);
             dgwCheckOut.DataSource = ds.Tables[0];
-
+            UC_CheckOut_Load(this, null);
         }
-
         int id;
         private void dgwCheckOut_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
@@ -48,15 +45,17 @@ namespace HotelManagement.All_User_Control
                 txtRoom.Text = dgwCheckOut.Rows[e.RowIndex].Cells[2].Value.ToString();
             }
         }
-
+        
         private void btnCheckOut_Click(object sender, EventArgs e)
         {
             if (txtCName.Text != "")
             {
                 if (MessageBox.Show("Bạn có chắc chắn không?", "Xác nhận", MessageBoxButtons.OKCancel, MessageBoxIcon.Warning) == DialogResult.OK)
                 {
-                    String cdate = txtCheckOutDate.Text;
-                    query = "update book set ischeckedout = 1, checkout = '" + cdate + "' where cid = " + id + " update rooms set booked = 0 where roomNo =  '" + txtRoom.Text + "'";
+                    int @CustomerId = id;
+                    String @CDate = txtCheckOutDate.Text;
+                    String @RoomNumber = txtRoom.Text;
+                    query = $"EXEC Updatecheckout {@CustomerId}, '{@CDate}', '{@RoomNumber}'";
                     fn.setData(query, "Thanh toán thành công");
                     UC_CheckOut_Load(this, null);
                     clearAll();
@@ -67,7 +66,6 @@ namespace HotelManagement.All_User_Control
                 MessageBox.Show("Không có khách hàng để lựa chọn", "Thông tin", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
         }
-
         public void clearAll()
         {
             txtCName.Clear();

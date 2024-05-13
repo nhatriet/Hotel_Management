@@ -49,6 +49,7 @@
             this.guna2Elipse3 = new Guna.UI2.WinForms.Guna2Elipse(this.components);
             this.guna2Elipse4 = new Guna.UI2.WinForms.Guna2Elipse(this.components);
             this.guna2Elipse5 = new Guna.UI2.WinForms.Guna2Elipse(this.components);
+            this.btnLogOut = new Guna.UI2.WinForms.Guna2Button();
             this.panel1.SuspendLayout();
             this.panel2.SuspendLayout();
             this.SuspendLayout();
@@ -252,12 +253,30 @@
             this.guna2Elipse5.BorderRadius = 30;
             this.guna2Elipse5.TargetControl = this;
             // 
+            // btnLogOut
+            // 
+            this.btnLogOut.DisabledState.BorderColor = System.Drawing.Color.DarkGray;
+            this.btnLogOut.DisabledState.CustomBorderColor = System.Drawing.Color.DarkGray;
+            this.btnLogOut.DisabledState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(169)))), ((int)(((byte)(169)))), ((int)(((byte)(169)))));
+            this.btnLogOut.DisabledState.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(141)))), ((int)(((byte)(141)))), ((int)(((byte)(141)))));
+            this.btnLogOut.FillColor = System.Drawing.Color.SlateBlue;
+            this.btnLogOut.Font = new System.Drawing.Font("Segoe UI", 9F);
+            this.btnLogOut.ForeColor = System.Drawing.Color.White;
+            this.btnLogOut.Image = ((System.Drawing.Image)(resources.GetObject("btnLogOut.Image")));
+            this.btnLogOut.ImageSize = new System.Drawing.Size(30, 30);
+            this.btnLogOut.Location = new System.Drawing.Point(3, 42);
+            this.btnLogOut.Name = "btnLogOut";
+            this.btnLogOut.Size = new System.Drawing.Size(37, 47);
+            this.btnLogOut.TabIndex = 6;
+            this.btnLogOut.Click += new System.EventHandler(this.btnLogOut_Click);
+            // 
             // Dashboard
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.SlateBlue;
             this.ClientSize = new System.Drawing.Size(1940, 1100);
+            this.Controls.Add(this.btnLogOut);
             this.Controls.Add(this.PanelMoving);
             this.Controls.Add(this.panel2);
             this.Controls.Add(this.panel1);
@@ -295,5 +314,6 @@
         private All_User_Control.UC_CustomerDetails uC_CustomerDetails1;
         private Guna.UI2.WinForms.Guna2Elipse guna2Elipse5;
         private All_User_Control.UC_Employee uC_Employee1;
+        private Guna.UI2.WinForms.Guna2Button btnLogOut;
     }
 }
