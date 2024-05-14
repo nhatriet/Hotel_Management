@@ -13,7 +13,7 @@ namespace HotelManagement.All_User_Control
 {
     public partial class UC_CustomerRes : UserControl
     {
-        private string connectionString = @"Data Source=MSI\SQLEXPRESS;Initial Catalog=Hotel_Encrypt;Integrated Security=True";
+        private string connectionString = @"Data Source=MSI\\MSSQLSERVERTH;Initial Catalog=Hotel_Encrypt;Integrated Security=True";
 
         function fn = new function();
 
@@ -28,47 +28,79 @@ namespace HotelManagement.All_User_Control
             InitializeComponent();
         }
 
-        public void showComboBox()
+        private void UC_CustomerRes_Load(object sender, EventArgs e)
+        {
+            this.showCboRoomType();
+        }
+
+        public void showCboRoomType()
         {
             conn = fn.getConnection();
             conn.Open();
-
-            cmd = new SqlCommand("select typeid, typedescription from roomtypes", conn);
-            da = new SqlDataAdapter();
-            da.SelectCommand = cmd;
+           
+            cmd = new SqlCommand("select * from vw_showCboRoomType_UC_CustomerRes", conn);
+            da = new SqlDataAdapter(cmd);
 
             DataTable table = new DataTable();
             da.Fill(table);
             txtRoomType.DataSource = table;
             txtRoomType.DisplayMember = "typedescription";
             txtRoomType.ValueMember = "typeid";
+
             conn.Close();
         }
 
-        private void UC_CustomerRes_Load(object sender, EventArgs e)
+        private void txtRoomType_SelectedIndexChanged(object sender, EventArgs e)
         {
-            this.showComboBox();
-        }
+            DataRowView selectedRow = (DataRowView)txtRoomType.SelectedItem;
 
-        public void setComboBox(String qurery, ComboBox combo)
-        {
-            SqlDataReader sdr = fn.getForCombo(query);
-            while (sdr.Read())
+            if (selectedRow != null)
             {
-                for (int i = 0; i < sdr.FieldCount; i++)
+                int typeId = Convert.ToInt32(selectedRow["typeid"]);
+                showCboRoomNo(typeId);
+
+                conn = fn.getConnection();
+                conn.Open();
+                SqlCommand cmd = new SqlCommand($"select price from roomtypes where typeid = '{typeId}'",conn);
+                var result = cmd.ExecuteScalar();
+                if (result != null)
                 {
-                    combo.Items.Add(sdr.GetString(i));
-                } 
+                    price = Convert.ToInt32(result);
+                    txtPrice.Text = result.ToString();
+                }
+
+                conn.Close();
             }
-            sdr.Close();
         }
 
+        public void showCboRoomNo(int typeId)
+        {
+            conn = fn.getConnection();
+            conn.Open();
+
+            cmd = new SqlCommand("sp_showCboRoomNo_UC_CustomerRes", conn);
+            cmd.CommandType = CommandType.StoredProcedure;
+            cmd.Parameters.AddWithValue("typeId", typeId);
+
+            da = new SqlDataAdapter(cmd);
+
+            DataTable table = new DataTable();
+            da.Fill(table);
+            txtRoomNo.DataSource = table;
+            txtRoomNo.DisplayMember = "roomNo";
+            txtRoomNo.ValueMember = "roomid";
+
+            conn.Close();
+        }
+        int rid;
+        int rNo;
+        int price;
         private void btnAllotCustomer_Click(object sender, EventArgs e)
         {
             if (txtName.Text != "" && txtPhone.Text != "" && txtNationality.Text != "" && txtGender.Text != "" && txtDOB.Text != "" && txtIDProof.Text != "" && txtAddress.Text != "" && txtCheckin.Text != "" && txtPrice.Text != "")
             {
                 String name = txtName.Text;
-                Int64 mobile = Int64.Parse(txtPhone.Text);
+                String mobile = txtPhone.Text;
                 String nationality = txtNationality.Text;
                 String gender = txtGender.Text;
                 String dob = txtDOB.Text;
@@ -76,9 +108,21 @@ namespace HotelManagement.All_User_Control
                 String address = txtAddress.Text;
                 String checkin = txtCheckin.Text;
 
-                query = "insert into customer (cname, mobile, nationality, gender, dob, idproof, address, roomid) values " +
-                    "('" + name + "'," + mobile + ",'" + nationality + "', '" + gender + "','" + dob + "','" + idproof + "','" + address + "','" + rid + ") update rooms set booked = '1' where roomNo = '" + txtRoomNo.Text + "'";
-                fn.setData(query, "Số phòng " + txtRoomNo.Text + " đăng ký khách hàng thành công");
+                conn = fn.getConnection();
+                conn.Open();
+                SqlCommand cmd = new SqlCommand("AddCustomer", conn);
+                cmd.CommandType = CommandType.StoredProcedure;
+                cmd.Parameters.AddWithValue("@cname", name);
+                cmd.Parameters.AddWithValue("@mobile", mobile);
+                cmd.Parameters.AddWithValue("@nationality", nationality);
+                cmd.Parameters.AddWithValue("@gender", gender);
+                cmd.Parameters.AddWithValue("@dob", dob);
+                cmd.Parameters.AddWithValue("@idproof", idproof);
+                cmd.Parameters.AddWithValue("@address", address);
+                cmd.Parameters.AddWithValue("@checkindate", checkin);
+                cmd.Parameters.AddWithValue("@roomid", rid);
+                cmd.ExecuteNonQuery();
+                MessageBox.Show("Số phòng " + txtRoomNo.Text + " đăng ký khách hàng thành công", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 clearAll();
             }
             else
@@ -98,39 +142,23 @@ namespace HotelManagement.All_User_Control
             txtIDProof.Clear();
             txtAddress.Clear();
             txtCheckin.ResetText();
-            txtBed.SelectedIndex = -1;
-            txtRoomNo.Items.Clear();
-            txtRoomType.SelectedIndex = -1;
             txtPrice.Clear();
-        }
-
-        private void txtBed_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            txtRoomNo.SelectedIndex = -1;
-            txtRoomNo.Items.Clear();
-            txtPrice.Clear();
-        }
-
-        private void txtRoomType_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            txtRoomNo.Items.Clear();
-            // query = "select roomNo from rooms where roomType = '" + txtRoomType.Text + "' and booked = 'NO'";
-            this.showComboBox();
-            setComboBox(query, txtRoomNo);
-        }
-
-        int rid;
-        private void txtRoomNo_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            query = "select price, roomid from rooms where roomNo = '" + txtRoomNo.Text + "'";
-            DataSet ds = fn.getData(query);
-            txtPrice.Text = ds.Tables[0].Rows[0][0].ToString();
-            rid = int.Parse(ds.Tables[0].Rows[0][1].ToString());
         }
 
         private void UC_CustomerRes_Leave(object sender, EventArgs e)
         {
             clearAll();
+        }
+
+        private void txtRoomNo_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            DataRowView selectedRow = (DataRowView)txtRoomNo.SelectedItem;
+
+            if (selectedRow != null)
+            {
+                rid = Convert.ToInt32(selectedRow["roomid"]);
+                rNo = Convert.ToInt32(selectedRow["roomNo"]);
+            }
         }
     }
 }
