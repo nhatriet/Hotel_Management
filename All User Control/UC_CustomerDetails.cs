@@ -8,13 +8,14 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Collections;
+using System.Data.SqlClient;
 
 namespace HotelManagement.All_User_Control
 {
     public partial class UC_CustomerDetails : UserControl
     {
         function fn = new function();
-        String query;
+        String SP;
         public UC_CustomerDetails()
         {
             InitializeComponent();
@@ -23,24 +24,31 @@ namespace HotelManagement.All_User_Control
         {
             if (txtSearchBy.SelectedIndex == 0)
             {
-                query = "select customer.cid, customer.cname, customer.mobile, customer.nationality, customer.gender, customer.dob, customer.idproof, customer.address, customer.checkin, rooms.roomNo, rooms.roomType, rooms.bed, rooms.price from customer inner join rooms on customer.roomid = rooms.roomid";
-                getRecord(query);
+                 SP = "AllCustomDetails";
+                getRecord(SP);
             }
             else if (txtSearchBy.SelectedIndex == 1)
             {
-                query = "select customer.cid, customer.cname, customer.mobile, customer.nationality, customer.gender, customer.dob, customer.idproof, customer.address, customer.checkin, rooms.roomNo, rooms.roomType, rooms.bed, rooms.price from customer inner join rooms on customer.roomid = rooms.roomid where checkout is null";
-                getRecord(query);
+                SP = "InHotelCustomer";
+                getRecord(SP);
             }
             else if (txtSearchBy.SelectedIndex == 2)
             {
-                query = "select customer.cid, customer.cname, customer.mobile, customer.nationality, customer.gender, customer.dob, customer.idproof, customer.address, customer.checkin, rooms.roomNo, rooms.roomType, rooms.bed, rooms.price from customer inner join rooms on customer.roomid = rooms.roomid where checkout is not null";
-                getRecord(query);
+                SP = "CheckoutCustomer";
+                getRecord(SP);
             }
         }
 
-        private void getRecord(String query)
+        private void getRecord(String SP)
         {
-            DataSet ds = fn.getData(query);
+            SqlConnection con = new SqlConnection();
+            con.ConnectionString = "Data Source=MSI\\MSSQLSERVERTH;Initial Catalog=Hotel_Encrypt;Integrated Security=True";
+            SqlCommand cmd = new SqlCommand(SP, con);
+            cmd.CommandType = CommandType.StoredProcedure;
+
+            SqlDataAdapter da = new SqlDataAdapter(cmd);
+            DataSet ds = new DataSet();
+            da.Fill(ds);
             dgwCustomerDetail.DataSource = ds.Tables[0];
         }
     }

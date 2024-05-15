@@ -45,9 +45,10 @@
             // 
             this.label1.AutoSize = true;
             this.label1.Font = new System.Drawing.Font("Cascadia Mono", 18F, System.Drawing.FontStyle.Bold);
-            this.label1.Location = new System.Drawing.Point(31, 28);
+            this.label1.Location = new System.Drawing.Point(41, 34);
+            this.label1.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(420, 32);
+            this.label1.Size = new System.Drawing.Size(539, 40);
             this.label1.TabIndex = 2;
             this.label1.Text = "Thông tin chi tiết khách hàng";
             // 
@@ -56,9 +57,10 @@
             this.label2.AutoSize = true;
             this.label2.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(163)));
             this.label2.ForeColor = System.Drawing.Color.Black;
-            this.label2.Location = new System.Drawing.Point(693, 79);
+            this.label2.Location = new System.Drawing.Point(924, 97);
+            this.label2.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(60, 17);
+            this.label2.Size = new System.Drawing.Size(79, 23);
             this.label2.TabIndex = 4;
             this.label2.Text = "Tìm kiếm";
             // 
@@ -76,15 +78,18 @@
             "All Customer Details",
             "In Hotel Customer",
             "Checkout Customer"});
-            this.txtSearchBy.Location = new System.Drawing.Point(696, 133);
+            this.txtSearchBy.Location = new System.Drawing.Point(928, 164);
+            this.txtSearchBy.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.txtSearchBy.Name = "txtSearchBy";
-            this.txtSearchBy.Size = new System.Drawing.Size(458, 36);
+            this.txtSearchBy.Size = new System.Drawing.Size(609, 36);
             this.txtSearchBy.Style = Guna.UI2.WinForms.Enums.TextBoxStyle.Material;
             this.txtSearchBy.TabIndex = 11;
             this.txtSearchBy.SelectedIndexChanged += new System.EventHandler(this.txtSearchBy_SelectedIndexChanged);
             // 
             // dgwCustomerDetail
             // 
+            this.dgwCustomerDetail.AllowUserToAddRows = false;
+            this.dgwCustomerDetail.AllowUserToDeleteRows = false;
             dataGridViewCellStyle1.BackColor = System.Drawing.Color.White;
             this.dgwCustomerDetail.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle1;
             this.dgwCustomerDetail.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
@@ -107,10 +112,12 @@
             dataGridViewCellStyle3.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
             this.dgwCustomerDetail.DefaultCellStyle = dataGridViewCellStyle3;
             this.dgwCustomerDetail.GridColor = System.Drawing.Color.FromArgb(((int)(((byte)(231)))), ((int)(((byte)(229)))), ((int)(((byte)(255)))));
-            this.dgwCustomerDetail.Location = new System.Drawing.Point(37, 205);
+            this.dgwCustomerDetail.Location = new System.Drawing.Point(49, 252);
+            this.dgwCustomerDetail.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.dgwCustomerDetail.Name = "dgwCustomerDetail";
             this.dgwCustomerDetail.RowHeadersVisible = false;
-            this.dgwCustomerDetail.Size = new System.Drawing.Size(1763, 490);
+            this.dgwCustomerDetail.RowHeadersWidth = 51;
+            this.dgwCustomerDetail.Size = new System.Drawing.Size(2351, 603);
             this.dgwCustomerDetail.TabIndex = 12;
             this.dgwCustomerDetail.ThemeStyle.AlternatingRowsStyle.BackColor = System.Drawing.Color.White;
             this.dgwCustomerDetail.ThemeStyle.AlternatingRowsStyle.Font = null;
@@ -141,14 +148,15 @@
             // 
             // UC_CustomerDetails
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.Controls.Add(this.dgwCustomerDetail);
             this.Controls.Add(this.txtSearchBy);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.label1);
+            this.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.Name = "UC_CustomerDetails";
-            this.Size = new System.Drawing.Size(1878, 848);
+            this.Size = new System.Drawing.Size(2504, 1044);
             ((System.ComponentModel.ISupportInitialize)(this.dgwCustomerDetail)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
