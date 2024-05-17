@@ -271,11 +271,12 @@
             this.btnReport.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(224)))), ((int)(((byte)(192)))));
             this.btnReport.Font = new System.Drawing.Font("Segoe UI", 11.25F, System.Drawing.FontStyle.Bold);
             this.btnReport.ForeColor = System.Drawing.Color.Black;
-            this.btnReport.Location = new System.Drawing.Point(1570, 149);
+            this.btnReport.Location = new System.Drawing.Point(1075, 130);
             this.btnReport.Name = "btnReport";
             this.btnReport.Size = new System.Drawing.Size(180, 45);
             this.btnReport.TabIndex = 30;
             this.btnReport.Text = "In hóa đơn";
+            this.btnReport.Click += new System.EventHandler(this.btnReport_Click);
             // 
             // UC_CheckOut
             // 

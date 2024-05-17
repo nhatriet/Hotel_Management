@@ -69,7 +69,7 @@ namespace HotelManagement
 
         private void btnLogOut_Click(object sender, EventArgs e)
         {
-            DialogResult result = MessageBox.Show("Bạn chắc chắn muốn thoát?", "Thông tin", MessageBoxButtons.YesNo);
+            DialogResult result = MessageBox.Show("Bạn muốn đăng xuất?", "Thông tin", MessageBoxButtons.YesNo);
             if (result == DialogResult.Yes)
             {
                 Form1 frmLogin = new Form1();
@@ -80,6 +80,11 @@ namespace HotelManagement
                 Dashboard dashboard = new Dashboard();
                 dashboard.Show();
             }
+
+        }
+
+        private void uC_Employee1_Load(object sender, EventArgs e)
+        {
 
         }
     }

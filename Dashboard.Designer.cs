@@ -194,6 +194,7 @@
             this.uC_Employee1.Name = "uC_Employee1";
             this.uC_Employee1.Size = new System.Drawing.Size(1882, 852);
             this.uC_Employee1.TabIndex = 4;
+            this.uC_Employee1.Load += new System.EventHandler(this.uC_Employee1_Load);
             // 
             // uC_CustomerDetails1
             // 

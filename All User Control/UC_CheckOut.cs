@@ -2,7 +2,9 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
+using System.Data.SqlClient;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -14,6 +16,7 @@ namespace HotelManagement.All_User_Control
     {
         function fn = new function();
         String query;
+        String SP;
         public UC_CheckOut()
         {
             InitializeComponent();
@@ -21,8 +24,22 @@ namespace HotelManagement.All_User_Control
 
         private void UC_CheckOut_Load(object sender, EventArgs e)
         {
-            query = "Select * from PaymentInfo";
-            DataSet ds = fn.getData(query);
+            SP = "InHotelCustomer";
+            getRecord(SP); 
+            //DataSet ds = fn.getData(query);
+            //dgwCheckOut.DataSource = ds.Tables[0];
+        }
+
+        private void getRecord(String SP)
+        {
+            SqlConnection con = new SqlConnection();
+            con.ConnectionString = "Data Source=MSI\\SQLEXPRESS;Initial Catalog=Hotel_Encrypt;Integrated Security=True";
+            SqlCommand cmd = new SqlCommand(SP, con);
+            cmd.CommandType = CommandType.StoredProcedure;
+
+            SqlDataAdapter da = new SqlDataAdapter(cmd);
+            DataSet ds = new DataSet();
+            da.Fill(ds);
             dgwCheckOut.DataSource = ds.Tables[0];
         }
 
@@ -35,17 +52,16 @@ namespace HotelManagement.All_User_Control
             dgwCheckOut.DataSource = ds.Tables[0];
             UC_CheckOut_Load(this, null);
         }
-        int id;
+        //int id;
         private void dgwCheckOut_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
             if (dgwCheckOut.Rows[e.RowIndex].Cells[e.RowIndex].Value != null)
             {
-                id = int.Parse(dgwCheckOut.Rows[e.RowIndex].Cells[0].Value.ToString());
-                txtCName.Text = dgwCheckOut.Rows[e.RowIndex].Cells[1].Value.ToString();
-                txtRoom.Text = dgwCheckOut.Rows[e.RowIndex].Cells[2].Value.ToString();
+                txtCName.Text = dgwCheckOut.Rows[e.RowIndex].Cells[0].Value.ToString();
+                txtRoom.Text = dgwCheckOut.Rows[e.RowIndex].Cells[1].Value.ToString();
             }
         }
-        
+        int id;
         private void btnCheckOut_Click(object sender, EventArgs e)
         {
             if (txtCName.Text != "")
@@ -77,6 +93,50 @@ namespace HotelManagement.All_User_Control
         private void UC_CheckOut_Leave(object sender, EventArgs e)
         {
             clearAll();
+        }
+
+        private void btnReport_Click(object sender, EventArgs e)
+        {
+
+            string @CName = txtCName.Text.Trim();
+            query = $"SELECT * FROM View_Invoices WHERE cname LIKE '{@CName}'";
+            try
+            {
+                SqlDataReader reader = fn.getForCombo(query);
+                StringBuilder sb = new StringBuilder();
+
+                // Thêm tiêu đề hóa đơn
+                sb.AppendLine("***************************");
+                sb.AppendLine("         HÓA ĐƠN          ");
+                sb.AppendLine("***************************");
+                sb.AppendLine();
+                while (reader.Read())
+                {
+                    sb.AppendLine($"Số phòng       : {reader["roomNo"]}");
+                    sb.AppendLine($"Tên khách hàng : {reader["cname"]}");
+                    sb.AppendLine($"Số điện thoại  : {reader["mobile"]}");
+                    sb.AppendLine($"Quốc tịch      : {reader["nationality"]}");
+                    sb.AppendLine($"Giới tính      : {reader["gender"]}");
+                    sb.AppendLine($"Ngày sinh      : {reader["dob"]}");
+                    sb.AppendLine($"CMND/CCCD      : {reader["idproof"]}");
+                    sb.AppendLine($"Địa chỉ        : {reader["address"]}");
+                    sb.AppendLine($"Ngày nhận phòng: {reader["checkindate"]}");
+                    sb.AppendLine($"Ngày trả phòng : {reader["checkoutdate"]}");
+                    sb.AppendLine($"Loại phòng     : {reader["typedescription"]}");
+                    sb.AppendLine($"Giá phòng      : {reader["price"]}");
+                    sb.AppendLine("***************************");
+                    sb.AppendLine();
+                }
+                reader.Close();
+
+                string filePath = "C:\\Users\\thanh\\OneDrive\\Tài liệu\\Workspace\\SecurityDatabase\\report.txt";
+                File.WriteAllText(filePath, sb.ToString());
+                MessageBox.Show("Dữ liệu đã được ghi ra file " + filePath, "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Đã xảy ra lỗi: " + ex.Message, "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
     }
 }

@@ -555,7 +555,6 @@
             this.Controls.Add(this.label1);
             this.Name = "UC_Employee";
             this.Size = new System.Drawing.Size(1882, 852);
-            this.Load += new System.EventHandler(this.UC_Employee_Load);
             this.Leave += new System.EventHandler(this.UC_Employee_Leave);
             this.tabEmployee.ResumeLayout(false);
             this.tabPage1.ResumeLayout(false);
