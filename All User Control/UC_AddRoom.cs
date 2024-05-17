@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -20,7 +21,7 @@ namespace HotelManagement.All_User_Control
         SqlConnection conn;
         SqlCommand cmd;
         SqlDataAdapter da;
-
+        String query;
         public UC_AddRoom()
         {
             InitializeComponent();
@@ -65,36 +66,22 @@ namespace HotelManagement.All_User_Control
         {
             if (txtRoomNo.Text != "" && txtRoomType.Text != "" && txtPrice.Text != "")
             {
-                String roomno = txtRoomNo.Text;
-                String typedescription = txtRoomType.SelectedItem.ToString();
-                Int64 price = Int64.Parse(txtPrice.Text);
-
-                using (SqlConnection connection = new SqlConnection(connectionString))
+                if (MessageBox.Show("Bạn có chắc chắn không?", "Xác nhận", MessageBoxButtons.OKCancel, MessageBoxIcon.Warning) == DialogResult.OK)
                 {
-                    using (SqlCommand command = new SqlCommand("AddRoom", connection))
-                    {
-                        command.CommandType = CommandType.StoredProcedure;
+                    String roomno = txtRoomNo.Text;
+                    //String typedescription = txtRoomType.SelectedItem.ToString();
+                    String typedescription = txtRoomType.Text; 
+                    Int64 price = Int64.Parse(txtPrice.Text); 
 
-                        command.Parameters.AddWithValue("@RoomNo", roomno);
-                        command.Parameters.AddWithValue("@TypeDescription", typedescription);
-                        command.Parameters.AddWithValue("@Price", price);
-
-                        connection.Open();
-                        int rowsAffected = command.ExecuteNonQuery();
-                        connection.Close();
-
-                        if (rowsAffected > 0)
-                        {
-                            MessageBox.Show("Đã thêm phòng.");
-                            UC_AddRoom_Load(this, null);
-                            clearAll();
-                        }
-                        else
-                        {
-                            MessageBox.Show("Xin vui lòng điền đầy đủ thông tin!", "Warning!", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                        }
-                    }
+                    query = $"exec AddRoom {roomno}, '{typedescription}', {price}";
+                    fn.setData(query, "Đã thêm phòng.");
+                    LoadRoomData();
+                    clearAll();
                 }
+            }
+            else
+            {
+                MessageBox.Show("Xin vui lòng điền đầy đủ thông tin!", "Warning!", MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }
         }
 

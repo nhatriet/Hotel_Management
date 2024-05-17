@@ -13,7 +13,7 @@ namespace HotelManagement.All_User_Control
 {
     public partial class UC_CustomerRes : UserControl
     {
-        private string connectionString = @"Data Source=MSI\\MSSQLSERVERTH;Initial Catalog=Hotel_Encrypt;Integrated Security=True";
+        private string connectionString = @"Data Source=MSI\\SQLEXPRESS;Initial Catalog=Hotel_Encrypt;Integrated Security=True";
 
         function fn = new function();
 
@@ -37,7 +37,7 @@ namespace HotelManagement.All_User_Control
         {
             conn = fn.getConnection();
             conn.Open();
-           
+
             cmd = new SqlCommand("select * from vw_showCboRoomType_UC_CustomerRes", conn);
             da = new SqlDataAdapter(cmd);
 
@@ -61,7 +61,9 @@ namespace HotelManagement.All_User_Control
 
                 conn = fn.getConnection();
                 conn.Open();
-                SqlCommand cmd = new SqlCommand($"select price from roomtypes where typeid = '{typeId}'",conn);
+
+                SqlCommand cmd = new SqlCommand($"select price from roomtypes where typeid = '{typeId}'", conn);
+
                 var result = cmd.ExecuteScalar();
                 if (result != null)
                 {
@@ -102,7 +104,7 @@ namespace HotelManagement.All_User_Control
                 String name = txtName.Text;
                 String mobile = txtPhone.Text;
                 String nationality = txtNationality.Text;
-                String gender = txtGender.Text;
+                Int64 gender = txtGender.SelectedIndex;
                 String dob = txtDOB.Text;
                 String idproof = txtIDProof.Text;
                 String address = txtAddress.Text;
