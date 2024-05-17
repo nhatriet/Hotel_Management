@@ -61,7 +61,9 @@ namespace HotelManagement.All_User_Control
 
                 conn = fn.getConnection();
                 conn.Open();
+
                 SqlCommand cmd = new SqlCommand($"select price from roomtypes where typeid = '{typeId}'", conn);
+
                 var result = cmd.ExecuteScalar();
                 if (result != null)
                 {
