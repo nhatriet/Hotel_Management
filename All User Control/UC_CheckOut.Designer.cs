@@ -155,7 +155,7 @@
             this.txtCName.Font = new System.Drawing.Font("Segoe UI", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(163)));
             this.txtCName.ForeColor = System.Drawing.Color.Black;
             this.txtCName.HoverState.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(94)))), ((int)(((byte)(148)))), ((int)(((byte)(255)))));
-            this.txtCName.Location = new System.Drawing.Point(43, 655);
+            this.txtCName.Location = new System.Drawing.Point(604, 655);
             this.txtCName.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.txtCName.Name = "txtCName";
             this.txtCName.PasswordChar = '\0';
@@ -170,7 +170,7 @@
             this.label3.AutoSize = true;
             this.label3.Font = new System.Drawing.Font("Segoe UI Semibold", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(163)));
             this.label3.ForeColor = System.Drawing.Color.Black;
-            this.label3.Location = new System.Drawing.Point(40, 598);
+            this.label3.Location = new System.Drawing.Point(39, 598);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(33, 20);
             this.label3.TabIndex = 5;
@@ -188,7 +188,7 @@
             this.txtRoom.Font = new System.Drawing.Font("Segoe UI", 11.25F);
             this.txtRoom.ForeColor = System.Drawing.Color.Black;
             this.txtRoom.HoverState.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(94)))), ((int)(((byte)(148)))), ((int)(((byte)(255)))));
-            this.txtRoom.Location = new System.Drawing.Point(588, 655);
+            this.txtRoom.Location = new System.Drawing.Point(43, 655);
             this.txtRoom.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.txtRoom.Name = "txtRoom";
             this.txtRoom.PasswordChar = '\0';
@@ -204,7 +204,7 @@
             this.label4.AutoSize = true;
             this.label4.Font = new System.Drawing.Font("Segoe UI Semibold", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(163)));
             this.label4.ForeColor = System.Drawing.Color.Black;
-            this.label4.Location = new System.Drawing.Point(585, 598);
+            this.label4.Location = new System.Drawing.Point(600, 598);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(75, 20);
             this.label4.TabIndex = 7;
