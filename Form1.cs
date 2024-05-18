@@ -1,4 +1,5 @@
-﻿using System;
+﻿using HotelManagement.All_User_Control;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -15,7 +16,6 @@ namespace HotelManagement
     public partial class Form1 : Form
     {
         function fn = new function();
-        String query;
         public Form1()
         {
             InitializeComponent();
@@ -34,7 +34,7 @@ namespace HotelManagement
         private void btnLogin_Click(object sender, EventArgs e)
         {
             string username = txtUsername.Text;
-            string password = txtUsername.Text;
+            string password = txtPassword.Text;
             if (username != String.Empty || password != String.Empty)
             {
                 SqlConnection con = fn.getConnection();
@@ -43,32 +43,25 @@ namespace HotelManagement
                 cmd.CommandType = CommandType.StoredProcedure;
 
                 // Thêm tham số đầu vào
-                cmd.Parameters.Add(new SqlParameter("@username", SqlDbType.VarChar, 50)).Value = username;
-                cmd.Parameters.Add(new SqlParameter("@pass", SqlDbType.VarChar, 250)).Value = password;
+                cmd.Parameters.AddWithValue("@username", username);
+                cmd.Parameters.AddWithValue("@pass", password);
 
                 // Thêm tham số output
-                SqlParameter outUsernameParam = new SqlParameter("@out_username", SqlDbType.VarChar, 50)
+                SqlParameter role = new SqlParameter("@roleid", SqlDbType.Int)
                 {
                     Direction = ParameterDirection.Output
                 };
-                cmd.Parameters.Add(outUsernameParam);
-
-                SqlParameter outPasswordParam = new SqlParameter("@out_password", SqlDbType.VarChar, 50)
-                {
-                    Direction = ParameterDirection.Output
-                };
-                cmd.Parameters.Add(outPasswordParam);
+                cmd.Parameters.Add(role);
 
                 // Thực thi stored procedure
                 cmd.ExecuteNonQuery();
-
-                fn.username = outUsernameParam.Value.ToString();
-                fn.password = outPasswordParam.Value.ToString();
+                int roleid = Int32.Parse(cmd.Parameters["@roleid"].Value.ToString());
                 con.Close();
-                if (outUsernameParam != null)
+                if (roleid != 0)
                 {
                     labelError.Visible = false;
-                    Dashboard dash = new Dashboard();
+                    Dashboard dash = new Dashboard(roleid);
+                    
                     this.Hide();
                     dash.Show();
                 }
@@ -82,7 +75,6 @@ namespace HotelManagement
             {
                 MessageBox.Show("Vui lòng nhập đầy đủ thông tin.", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
-            
         }
     }
 }
