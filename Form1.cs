@@ -2,11 +2,13 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
+using System.Data.SqlClient;
 using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Xml.Linq;
 
 namespace HotelManagement
 {
@@ -31,12 +33,39 @@ namespace HotelManagement
 
         private void btnLogin_Click(object sender, EventArgs e)
         {
-            if (txtUsername.Text != String.Empty || txtPassword.Text != String.Empty)
+            string username = txtUsername.Text;
+            string password = txtUsername.Text;
+            if (username != String.Empty || password != String.Empty)
             {
-                query = "select username, pass from employee where username = '" + txtUsername.Text + "' and pass = '" + txtPassword.Text + "'";
-                DataSet ds = fn.getData(query);
+                SqlConnection con = fn.getConnection();
+                con.Open();
+                SqlCommand cmd = new SqlCommand("sp_Login", con);
+                cmd.CommandType = CommandType.StoredProcedure;
 
-                if (ds.Tables[0].Rows.Count != 0)
+                // Thêm tham số đầu vào
+                cmd.Parameters.Add(new SqlParameter("@username", SqlDbType.VarChar, 50)).Value = username;
+                cmd.Parameters.Add(new SqlParameter("@pass", SqlDbType.VarChar, 250)).Value = password;
+
+                // Thêm tham số output
+                SqlParameter outUsernameParam = new SqlParameter("@out_username", SqlDbType.VarChar, 50)
+                {
+                    Direction = ParameterDirection.Output
+                };
+                cmd.Parameters.Add(outUsernameParam);
+
+                SqlParameter outPasswordParam = new SqlParameter("@out_password", SqlDbType.VarChar, 50)
+                {
+                    Direction = ParameterDirection.Output
+                };
+                cmd.Parameters.Add(outPasswordParam);
+
+                // Thực thi stored procedure
+                cmd.ExecuteNonQuery();
+
+                fn.username = outUsernameParam.Value.ToString();
+                fn.password = outPasswordParam.Value.ToString();
+                con.Close();
+                if (outUsernameParam != null)
                 {
                     labelError.Visible = false;
                     Dashboard dash = new Dashboard();
