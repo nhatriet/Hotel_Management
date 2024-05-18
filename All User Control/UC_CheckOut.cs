@@ -9,6 +9,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Xml.Linq;
 
 namespace HotelManagement.All_User_Control
 {
@@ -16,7 +17,6 @@ namespace HotelManagement.All_User_Control
     {
         function fn = new function();
         String query;
-        String SP;
         public UC_CheckOut()
         {
             InitializeComponent();
@@ -24,32 +24,20 @@ namespace HotelManagement.All_User_Control
 
         private void UC_CheckOut_Load(object sender, EventArgs e)
         {
-            SP = "InHotelCustomer";
-            getRecord(SP); 
-            //DataSet ds = fn.getData(query);
-            //dgwCheckOut.DataSource = ds.Tables[0];
-        }
-
-        private void getRecord(String SP)
-        {
-            SqlConnection con = new SqlConnection();
-            con.ConnectionString = "Data Source=MSI\\SQLEXPRESS;Initial Catalog=Hotel_Encrypt;Integrated Security=True";
-            SqlCommand cmd = new SqlCommand(SP, con);
-            cmd.CommandType = CommandType.StoredProcedure;
-
-            SqlDataAdapter da = new SqlDataAdapter(cmd);
-            DataSet ds = new DataSet();
-            da.Fill(ds);
+            //SP = "InHotelCustomer";
+            //getRecord(SP); 
+            query = $"EXEC PaymentInfo";
+            DataSet ds = fn.getData(query);
             dgwCheckOut.DataSource = ds.Tables[0];
         }
 
         private void txtName_TextChanged(object sender, EventArgs e)
         {
-            string CName = txtName.Text.Trim();
-            query = "SELECT * FROM PaymentInfo WHERE cname LIKE '" + CName + "'";
-            // query = "Select * from PaymentInfo where cname like '" + txtName.Text + "'";
-            DataSet ds = fn.getData(query);
-            dgwCheckOut.DataSource = ds.Tables[0];
+            //string CName = txtName.Text.Trim();
+            //query = $"EXEC PaymentInfo '{@CName}'";
+
+            //DataSet ds = fn.getData(query);
+            //dgwCheckOut.DataSource = ds.Tables[0];
             UC_CheckOut_Load(this, null);
         }
         //int id;
@@ -68,10 +56,11 @@ namespace HotelManagement.All_User_Control
             {
                 if (MessageBox.Show("Bạn có chắc chắn không?", "Xác nhận", MessageBoxButtons.OKCancel, MessageBoxIcon.Warning) == DialogResult.OK)
                 {
-                    int @CustomerId = id;
+                    //int @CustomerId = id;
+                    string @CName = txtCName.Text;
                     String @CDate = txtCheckOutDate.Text;
                     String @RoomNumber = txtRoom.Text;
-                    query = $"EXEC Updatecheckout {@CustomerId}, '{@CDate}', '{@RoomNumber}'";
+                    query = $"EXEC Updatecheckout '{@CName}','{@CDate}', '{@RoomNumber}'";
                     fn.setData(query, "Thanh toán thành công");
                     UC_CheckOut_Load(this, null);
                     clearAll();
@@ -82,6 +71,7 @@ namespace HotelManagement.All_User_Control
                 MessageBox.Show("Không có khách hàng để lựa chọn", "Thông tin", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
         }
+
         public void clearAll()
         {
             txtCName.Clear();
@@ -99,7 +89,7 @@ namespace HotelManagement.All_User_Control
         {
 
             string @CName = txtCName.Text.Trim();
-            query = $"SELECT * FROM View_Invoices WHERE cname LIKE '{@CName}'";
+            query = $"exec View_Invoices {@CName}";
             try
             {
                 SqlDataReader reader = fn.getForCombo(query);
