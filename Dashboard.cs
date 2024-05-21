@@ -12,9 +12,15 @@ namespace HotelManagement
 {
     public partial class Dashboard : Form
     {
+        private int roleid;
         public Dashboard()
         {
             InitializeComponent();
+        }
+        public Dashboard(int roleid)
+        {
+            InitializeComponent();
+            this.roleid = roleid;
         }
 
         private void btnExit_Click(object sender, EventArgs e)
@@ -28,15 +34,25 @@ namespace HotelManagement
             uC_CustomerRes1.Visible = false;
             uC_CheckOut1.Visible = false;
             uC_CustomerDetails1.Visible = false;
-            uC_Employee1.Visible = false;   
-            btnAddRoom.PerformClick();
+            uC_Employee1.Visible = false;
+            if (roleid == 1)
+            {
+                btnAddRoom.PerformClick();
+            }
+            else if (roleid == 2)
+            {
+                btnCustomerRes.PerformClick();
+            }
         }
 
         private void btnAddRoom_Click(object sender, EventArgs e)
         {
-            PanelMoving.Left = btnAddRoom.Left + 50;
-            uC_AddRoom1.Visible = true;
-            uC_AddRoom1.BringToFront();
+            if (roleid == 1)
+            {
+                PanelMoving.Left = btnAddRoom.Left + 50;
+                uC_AddRoom1.Visible = true;
+                uC_AddRoom1.BringToFront();
+            }
         }
 
         private void btnCustomerRes_Click(object sender, EventArgs e)
@@ -62,9 +78,12 @@ namespace HotelManagement
 
         private void btnEmployee_Click(object sender, EventArgs e)
         {
-            PanelMoving.Left = btnEmployee.Left + 60;
-            uC_Employee1.Visible = true;
-            uC_Employee1.BringToFront();
+            if (roleid == 1)
+            {
+                PanelMoving.Left = btnEmployee.Left + 60;
+                uC_Employee1.Visible = true;
+                uC_Employee1.BringToFront();
+            }
         }
 
         private void btnLogOut_Click(object sender, EventArgs e)

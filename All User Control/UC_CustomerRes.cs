@@ -13,7 +13,6 @@ namespace HotelManagement.All_User_Control
 {
     public partial class UC_CustomerRes : UserControl
     {
-        private string connectionString = @"Data Source=MSI\\SQLEXPRESS;Initial Catalog=Hotel_Encrypt;Integrated Security=True";
 
         function fn = new function();
 

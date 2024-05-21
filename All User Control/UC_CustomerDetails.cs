@@ -41,9 +41,8 @@ namespace HotelManagement.All_User_Control
 
         private void getRecord(String SP)
         {
-            SqlConnection con = new SqlConnection();
-            con.ConnectionString = "Data Source=MSI\\SQLEXPRESS;Initial Catalog=Hotel_Encrypt;Integrated Security=True";
-            
+            SqlConnection con = fn.getConnection();
+
             SqlCommand cmd = new SqlCommand(SP, con);
             cmd.CommandType = CommandType.StoredProcedure;
 

@@ -1,19 +1,21 @@
-﻿using System;
+﻿using HotelManagement.All_User_Control;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
+using System.Data.SqlClient;
 using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Xml.Linq;
 
 namespace HotelManagement
 {
     public partial class Form1 : Form
     {
         function fn = new function();
-        String query;
         public Form1()
         {
             InitializeComponent();
@@ -31,15 +33,35 @@ namespace HotelManagement
 
         private void btnLogin_Click(object sender, EventArgs e)
         {
-            if (txtUsername.Text != String.Empty || txtPassword.Text != String.Empty)
+            string username = txtUsername.Text;
+            string password = txtPassword.Text;
+            if (username != String.Empty || password != String.Empty)
             {
-                query = "select username, pass from employee where username = '" + txtUsername.Text + "' and pass = '" + txtPassword.Text + "'";
-                DataSet ds = fn.getData(query);
+                SqlConnection con = fn.getConnection();
+                con.Open();
+                SqlCommand cmd = new SqlCommand("sp_Login", con);
+                cmd.CommandType = CommandType.StoredProcedure;
 
-                if (ds.Tables[0].Rows.Count != 0)
+                // Thêm tham số đầu vào
+                cmd.Parameters.AddWithValue("@username", username);
+                cmd.Parameters.AddWithValue("@pass", password);
+
+                // Thêm tham số output
+                SqlParameter role = new SqlParameter("@roleid", SqlDbType.Int)
+                {
+                    Direction = ParameterDirection.Output
+                };
+                cmd.Parameters.Add(role);
+
+                // Thực thi stored procedure
+                cmd.ExecuteNonQuery();
+                int roleid = Int32.Parse(cmd.Parameters["@roleid"].Value.ToString());
+                con.Close();
+                if (roleid != 0)
                 {
                     labelError.Visible = false;
-                    Dashboard dash = new Dashboard();
+                    Dashboard dash = new Dashboard(roleid);
+
                     this.Hide();
                     dash.Show();
                 }
@@ -53,7 +75,6 @@ namespace HotelManagement
             {
                 MessageBox.Show("Vui lòng nhập đầy đủ thông tin.", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
-            
         }
     }
 }
