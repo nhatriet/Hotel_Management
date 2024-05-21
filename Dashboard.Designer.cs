@@ -190,7 +190,7 @@
             // uC_Employee1
             // 
             this.uC_Employee1.BackColor = System.Drawing.Color.White;
-            this.uC_Employee1.Location = new System.Drawing.Point(-1, -5);
+            this.uC_Employee1.Location = new System.Drawing.Point(-1, -7);
             this.uC_Employee1.Name = "uC_Employee1";
             this.uC_Employee1.Size = new System.Drawing.Size(1882, 852);
             this.uC_Employee1.TabIndex = 4;

@@ -24,43 +24,30 @@ namespace HotelManagement.All_User_Control
 
         private void UC_CheckOut_Load(object sender, EventArgs e)
         {
-            //SP = "InHotelCustomer";
-            //getRecord(SP); 
             query = $"EXEC PaymentInfo";
             DataSet ds = fn.getData(query);
             dgwCheckOut.DataSource = ds.Tables[0];
         }
 
-        private void txtName_TextChanged(object sender, EventArgs e)
-        {
-            //string CName = txtName.Text.Trim();
-            //query = $"EXEC PaymentInfo '{@CName}'";
-
-            //DataSet ds = fn.getData(query);
-            //dgwCheckOut.DataSource = ds.Tables[0];
-            UC_CheckOut_Load(this, null);
-        }
-        //int id;
         private void dgwCheckOut_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
             if (dgwCheckOut.Rows[e.RowIndex].Cells[e.RowIndex].Value != null)
             {
-                txtCName.Text = dgwCheckOut.Rows[e.RowIndex].Cells[0].Value.ToString();
-                txtRoom.Text = dgwCheckOut.Rows[e.RowIndex].Cells[1].Value.ToString();
+                txtRoom.Text = dgwCheckOut.Rows[e.RowIndex].Cells[0].Value.ToString();
+                txtCName.Text = dgwCheckOut.Rows[e.RowIndex].Cells[1].Value.ToString();
             }
         }
-        int id;
+
         private void btnCheckOut_Click(object sender, EventArgs e)
         {
             if (txtCName.Text != "")
             {
                 if (MessageBox.Show("Bạn có chắc chắn không?", "Xác nhận", MessageBoxButtons.OKCancel, MessageBoxIcon.Warning) == DialogResult.OK)
                 {
-                    //int @CustomerId = id;
-                    string @CName = txtCName.Text;
-                    String @CDate = txtCheckOutDate.Text;
                     String @RoomNumber = txtRoom.Text;
-                    query = $"EXEC Updatecheckout '{@CName}','{@CDate}', '{@RoomNumber}'";
+                    String @CName = txtCName.Text;
+                    String @CDate = txtCheckOutDate.Text;
+                    query = $"EXEC Updatecheckout '{@RoomNumber}', '{@CName}', '{@CDate}'";
                     fn.setData(query, "Thanh toán thành công");
                     UC_CheckOut_Load(this, null);
                     clearAll();
@@ -75,7 +62,6 @@ namespace HotelManagement.All_User_Control
         public void clearAll()
         {
             txtCName.Clear();
-            txtName.Clear();
             txtRoom.Clear();
             txtCheckOutDate.ResetText();
         }
